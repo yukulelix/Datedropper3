@@ -1,13 +1,4 @@
 (function($) {
-	
-	Array.prototype.fluxfix = function(int) {
-		var match = Math.trunc(this.length/2);
-		while(this.indexOf(int) != match) {
-			this.push(this.shift());
-		}
-		return this;
-	}
-	
 	var
 		// I18N
 		i18n = {
@@ -1180,28 +1171,6 @@
 				return o[0];
 			
 		},
-		get_fix = function(k) {
-			
-			pick_dragged.find('li').addClass('.null');
-			
-			var
-				o = [];
-		
-			pick_dragged.find('li').each(function(){
-				o.push($(this).attr('value'));
-			});
-			
-			o.fluxfix(pick_drag_temp);
-			
-			$.each(o, function( index, value ) {
-				pick_dragged.find('li[value='+value+']').appendTo(pick_dragged);
-			});
-			
-			pick_dragged.find('li').removeClass('.null');
-			
-			picker_ul_transition(k,pick_drag_temp);
-			
-		},
 		get_picker_els = function(el) {
 			if(picker)
 				return picker.element.find(el);
@@ -1727,8 +1696,6 @@
 				k = pick_dragged.data('k');	
 			pick_drag_offset = is_touch() ? e.originalEvent.touches[0].pageY : e.pageY;
 			pick_drag_temp = get_current(k);
-			if (!get_picker_els('.pick-arw').is(e.target) && get_picker_els('.pick-arw').has(e.target).length === 0)
-				get_fix(k);	
 		}
 	})
 	
