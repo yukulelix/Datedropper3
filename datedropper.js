@@ -12,10 +12,10 @@
 						'Mar',
 						'Apr',
 						'May',
-						'Jun',
-						'Jul',
+						'June',
+						'July',
 						'Aug',
-						'Sep',
+						'Sept',
 						'Oct',
 						'Nov',
 						'Dec'
