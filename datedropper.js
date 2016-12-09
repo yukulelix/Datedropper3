@@ -1143,11 +1143,18 @@
 					}
 				}
 			}
-			else {
-				picker.element.removeClass('picker-lkd');
-				return false;
-			}
 			
+			if(pickers[picker.id].disabledays) {
+				if(pickers[picker.id].disabledays.indexOf(unix_current) != -1) {
+					picker_alrt();
+					picker.element.addClass('picker-lkd');
+					return true;
+				}
+				else {
+					picker.element.removeClass('picker-lkd');
+					return false;
+				}
+			}		
 		},
 		is_int = function(n) {
 			return n % 1 === 0;
@@ -1448,6 +1455,17 @@
 					}
 				}
 			}	
+			if(pickers[picker.id].disabledays) {
+				$.each(pickers[picker.id].disabledays, function( i, v ) {
+					if(v&&is_date(v)) {
+						var
+							d = new Date(v*1000);
+						if(d.getMonth()+1==get_current('m')&&d.getFullYear()==get_current('y'))
+							get_picker_els('.pick-lg .pick-lg-b li.pick-v[data-value="'+d.getDate()+'"]')
+							.addClass('pick-lk');
+					}
+				});
+			}
 		},
 		picker_fills = function() {
 			
@@ -1811,6 +1829,7 @@
 					
 				var
 					picker_default_date = (input.data('default-date')&&is_date(input.data('default-date'))) ? input.data('default-date') : null,
+					picker_disabled_days = (input.data('disabled-days')) ? input.data('disabled-days').split(',') : null,
 					picker_format = input.data('format') || 'm/d/Y',
 					picker_fx = (input.data('fx')===false) ? input.data('fx') : true,
 					picker_fx_class = (input.data('fx')===false) ? '' : 'picker-fxs',
@@ -1825,8 +1844,17 @@
 					picker_min_year = (input.data('min-year')&&is_int(input.data('min-year'))) ? input.data('min-year') : 1970,
 					picker_theme = input.data('theme') || 'primary',
 					picker_translate_mode = (input.data('translate-mode')===true) ? true : false;
-					
+				
+				
+				if(picker_disabled_days) {
+					$.each(picker_disabled_days, function( index, value ) {
+						if(value&&is_date(value))
+							picker_disabled_days[index] = get_unix(value);
+					});
+				}
+				
 				pickers[id] = {
+					disabledays : picker_disabled_days,
 					format : picker_format,
 					fx : picker_fx,
 					fxmobile : picker_fx_mobile,
