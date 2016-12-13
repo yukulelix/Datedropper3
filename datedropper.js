@@ -1614,12 +1614,11 @@
 					.replace(/\b(M)\b/g, i18n[pickers[picker.id].lang].months.short[m-1])
 					.replace(/\b(n)\b/g, m)
 					.replace(/\b(j)\b/g, d);
-															
+				
 				picker
 				.input
 				.val(str)
 				.change();
-			
 			}
 		};
 		
@@ -2017,7 +2016,6 @@
 				
 				picker_offset();
 				is_fx_mobile();
-				picker_set();
 				picker_show();
 				
 			});
