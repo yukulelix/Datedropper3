@@ -1088,6 +1088,7 @@
 		
 		pickers = {},
 		picker = null,
+		picker_ctrl = false,
 		pick_dragged = null,
 		pick_drag_offset = null,
 		pick_drag_temp = null,
@@ -1284,6 +1285,7 @@
 				picker.element.removeClass('picker-focus');
 				picker = null;
 			}
+			picker_ctrl = false;
 		},
 		picker_render_ul = function(k){
 			var
@@ -1592,15 +1594,14 @@
 		}
 		input_change_value = function() {
 			
-			var
-				d = get_current('d'),
-				m = get_current('m'),
-				y = get_current('y'),
-				get_day = new Date(m+"/"+d+"/"+y).getDay();
-			
-			if(!is_locked()) {
-					
+			if(!is_locked()&&picker_ctrl) {
+				
 				var
+					d = get_current('d'),
+					m = get_current('m'),
+					y = get_current('y'),
+					get_day = new Date(m+"/"+d+"/"+y).getDay(),
+					
 					str =
 					pickers[picker.id].format
 					.replace(/\b(d)\b/g, input_fill(d))
@@ -1619,7 +1620,11 @@
 				.input
 				.val(str)
 				.change();
+				
+				picker_ctrl = false;
+				
 			}
+			
 		};
 		
 	// GET UI EVENT
@@ -1668,6 +1673,7 @@
 		$(this).addClass('pick-sl');
 		pickers[picker.id].key['d'].current = $(this).attr('data-value');
 		picker_ul_transition('d',$(this).attr('data-value'));
+		picker_ctrl = true;
 	})
 	
 	//BUTTON LARGE-MODE
@@ -1707,6 +1713,8 @@
 		pickers[picker.id].key['y'].current = i;
 		picker_ul_transition('y',get_current('y'));
 		
+		picker_ctrl = true;
+		
 	})
 	
 	//DEFAULT ARROW
@@ -1719,6 +1727,9 @@
 			picker_ul_turn(k,'right');
 		else
 			picker_ul_turn(k,'left');
+			
+		picker_ctrl = true;
+		
 	})
 	
 	// JUMP
@@ -1774,6 +1785,7 @@
 	.on(ui_event.m,function(e){
 		
 		is_click = false;
+		
 		if(pick_dragged) {
 			e.preventDefault();
 			var
@@ -1786,6 +1798,8 @@
 				int = get_clear(k,i);
 			if(int!=pickers[picker.id].key[k].current)
 				picker_values_increase(k,int);		
+			
+			picker_ctrl = true;
 		}
 	})
 	
@@ -1994,8 +2008,10 @@
 						get_picker_els('.pick-y').hide();
 				}
 				
-				if(picker_init_set)
+				if(picker_init_set) {
+					picker_ctrl = true;
 					input_change_value();
+				}
 				
 				picker = null;			
 		
@@ -2014,8 +2030,8 @@
 					element : $('#'+$(this).data('id'))
 				};
 				
-				picker_offset();
 				is_fx_mobile();
+				picker_offset();
 				picker_show();
 				
 			});
