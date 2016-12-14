@@ -1,5 +1,10 @@
 (function($) {
 	var
+		// CSS EVENT DETECT
+		csse = {
+			t : 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd',
+			a : 'webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend'
+		},
 		// I18N
 		i18n = {
 			'en' : {
@@ -1253,14 +1258,16 @@
 			get_picker_els('ul.pick.pick-l').toggleClass('visible');
 		},
 		picker_offset = function(){
-			var
-				input = picker.input,
-				left = input.offset().left + input.outerWidth()/2,
-				top = input.offset().top + input.outerHeight();
-			picker.element.css({
-				'left' : left,
-				'top' : top
-			});
+			if(!picker.element.hasClass('picker-modal')){ 
+				var
+					input = picker.input,
+					left = input.offset().left + input.outerWidth()/2,
+					top = input.offset().top + input.outerHeight();
+				picker.element.css({
+					'left' : left,
+					'top' : top
+				});
+			}
 		},
 		picker_translate = function(v) {
 			pickers[picker.id].lang = Object.keys(i18n)[v];
@@ -1283,6 +1290,8 @@
 		picker_hide = function() {
 			if(!is_locked()) {
 				picker.element.removeClass('picker-focus');
+				if(picker.element.hasClass('picker-modal'))
+					$('.picker-modal-overlay').addClass('tohide');
 				picker = null;
 			}
 			picker_ctrl = false;
@@ -1662,10 +1671,16 @@
 	})
 	
 	//LOCK ANIMATION
-	.on('webkitAnimationEnd mozAnimationEnd oAnimationEnd oanimationend animationend',picker_node_el + '.picker-rmbl',function(){
+	.on(csse.a,picker_node_el + '.picker-rmbl',function(){
 		if(picker.element.hasClass('picker-rmbl'))
 			$(this).removeClass('picker-rmbl');
 	})
+	
+	//HIDE MODAL OVERLAY
+	.on(csse.t,'.picker-modal-overlay',function(){
+		$(this).remove();
+	})
+	
 	
 	//LARGE-MODE DAY CLICK
 	.on(ui_event.i,picker_node_el+' .pick-lg li.pick-v',function(){
@@ -1855,6 +1870,8 @@
 					picker_jump = (input.data('jump')&&is_int(input.data('jump'))) ? input.data('jump') : 10,
 					picker_max_year = (input.data('max-year')&&is_int(input.data('max-year'))) ? input.data('max-year') : new Date().getFullYear(),
 					picker_min_year = (input.data('min-year')&&is_int(input.data('min-year'))) ? input.data('min-year') : 1970,
+					
+					picker_modal = (input.data('modal')===true) ? 'picker-modal' : '',
 					picker_theme = input.data('theme') || 'primary',
 					picker_translate_mode = (input.data('translate-mode')===true) ? true : false;
 				
@@ -1926,7 +1943,7 @@
 				}
 					
 				$('<div>', {
-					class: 'datedropper ' + picker_theme + ' ' + picker_fx_class + ' ' + picker_large_class,
+					class: 'datedropper ' + picker_modal + ' ' + picker_theme + ' ' + picker_fx_class + ' ' + picker_large_class,
 					id: id,
 					html: $('<div>', {
 						class: 'picker'
@@ -2033,6 +2050,9 @@
 				is_fx_mobile();
 				picker_offset();
 				picker_show();
+				
+				if(picker.element.hasClass('picker-modal'))
+					$('body').append('<div class="picker-modal-overlay"></div>')
 				
 			});
 		}
