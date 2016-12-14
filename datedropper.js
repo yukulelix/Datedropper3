@@ -2049,8 +2049,9 @@
 				
 				is_fx_mobile();
 				picker_offset();
+				picker_set();
 				picker_show();
-				
+							
 				if(picker.element.hasClass('picker-modal'))
 					$('body').append('<div class="picker-modal-overlay"></div>')
 				
