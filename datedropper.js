@@ -1843,12 +1843,13 @@
 	});	
 		
 	$.fn.dateDropper = function(options) {
-		if($(this).is('input')) {
-			return $(this).each(function(index){
+		return $(this).each(function(){
+			if($(this).is('input')&&!$(this).hasClass('picker-input')) {
+					
 				var
 					input = $(this),
-					id = 'datedropper-' + index;
-					
+					id = 'datedropper-' + Object.keys(pickers).length;
+				
 				input
 				.attr('data-id',id)
 				.addClass('picker-input')
@@ -2032,32 +2033,33 @@
 					input_change_value();
 				}
 				
-				picker = null;			
-		
-			})
-			.focus(function(e){
+				picker = null;		
+			
+			}
+	
+		})
+		.focus(function(e){
+			
+			e.preventDefault();
+			$(this).blur();
+			
+			if(picker)
+				picker_hide();
 				
-				e.preventDefault();
-				$(this).blur();
-				
-				if(picker)
-					picker_hide();
-					
-				picker = {
-					id : $(this).data('id'),
-					input : $(this),
-					element : $('#'+$(this).data('id'))
-				};
-				
-				is_fx_mobile();
-				picker_offset();
-				picker_set();
-				picker_show();
-							
-				if(picker.element.hasClass('picker-modal'))
-					$('body').append('<div class="picker-modal-overlay"></div>')
-				
-			});
-		}
+			picker = {
+				id : $(this).data('id'),
+				input : $(this),
+				element : $('#'+$(this).data('id'))
+			};
+			
+			is_fx_mobile();
+			picker_offset();
+			picker_set();
+			picker_show();
+						
+			if(picker.element.hasClass('picker-modal'))
+				$('body').append('<div class="picker-modal-overlay"></div>')
+			
+		});
 	};
 }(jQuery));
