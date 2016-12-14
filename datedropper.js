@@ -1477,6 +1477,9 @@
 					}
 				});
 			}
+			
+			get_picker_els('.pick-lg-b li.pick-v[data-value='+get_current('d')+']').addClass('pick-sl');
+			
 		},
 		picker_fills = function() {
 			
@@ -1508,7 +1511,7 @@
 			});
 			
 			if(picker.element.hasClass('picker-lg')) {			
-				get_picker_els('.pick-lg-b li').removeClass('f l pick-wke pick-sl');
+				get_picker_els('.pick-lg-b li').removeClass('pick-wke');
 				get_picker_els('.pick-lg-b li.pick-v')
 				.each(function() {
 					var
@@ -1517,7 +1520,6 @@
 						$(this).addClass('pick-wke');
 						
 				});
-				get_picker_els('.pick-lg-b li.pick-v[data-value='+get_current('d')+']').addClass('pick-sl');
 			}
 				
 		},
