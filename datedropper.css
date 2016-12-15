@@ -354,7 +354,6 @@ div.datedropper .picker .pick-lg ul.pick-lg-h {
 }
 div.datedropper .picker .pick-lg ul.pick-lg-b {
   padding: 16px;
-  padding-bottom: 0;
 }
 div.datedropper .picker .pick-lg ul.pick-lg-b li {
   cursor: pointer;
