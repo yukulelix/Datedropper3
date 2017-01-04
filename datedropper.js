@@ -1850,30 +1850,6 @@
 					input = $(this),
 					id = 'datedropper-' + Object.keys(pickers).length;
 				
-
-				var
-					defaults = {
-						'default-date': null,
-						'disabled-days': null,
-						'format': 'm/d/Y',
-						'fx': true,
-						'fx-mobile': true,
-						'init-set': true,
-						'lang': 'en',
-						'large-mode': false,
-						'large-default': false,
-						'lock': false,
-						'jump': 10,
-						'max-year': new Date().getFullYear(),
-						'min-year': 1970,
-						'modal': false,
-						'theme': null,
-						'translate-mode': false
-					},
-					input_dom_data = input.data() ;
-
-				var opts = $.extend(defaults, options, input_dom_data) ;
-
 				input
 				.attr('data-id',id)
 				.addClass('picker-input')
@@ -1883,26 +1859,26 @@
 				});
 					
 				var
-					picker_default_date = (opts['default-date']&&is_date(opts['default-date'])) ? opts['default-date'] : null,
-					picker_disabled_days = (opts['disabled-days']) ? opts['disabled-days'].split(',') : null,
-					picker_format = opts['format'] || 'm/d/Y',
-					picker_fx = (opts['fx']===false) ? opts['fx'] : true,
-					picker_fx_class = (opts['fx']===false) ? '' : 'picker-fxs',
-					picker_fx_mobile = (opts['fx-mobile']===false) ? opts['fx-mobile'] : true,
-					picker_init_set = (opts['init-set']===false) ? false : true,
-					picker_lang = (opts['lang']&&(opts['lang'] in i18n)) ? opts['lang'] : 'en',
-					picker_large = (opts['large-mode']===true) ? true : false,
-					picker_large_class = (opts['large-default']===true && picker_large===true) ? 'picker-lg' : '',
-					picker_lock = (opts['lock']=='from'||opts['lock']=='to') ? opts['lock'] : false,
-					picker_jump = (opts['jump']&&is_int(opts['jump'])) ? opts['jump'] : 10,
-					picker_max_year = (opts['max-year']&&is_int(opts['max-year'])) ? opts['max-year'] : new Date().getFullYear(),
-					picker_min_year = (opts['min-year']&&is_int(opts['min-year'])) ? opts['min-year'] : 1970,
-
-					picker_modal = (opts['modal']===true) ? 'picker-modal' : '',
-					picker_theme = opts['theme'] || 'primary',
-					picker_translate_mode = (opts['translate-mode']===true) ? true : false;
-
-
+					picker_default_date = (input.data('default-date')&&is_date(input.data('default-date'))) ? input.data('default-date') : null,
+					picker_disabled_days = (input.data('disabled-days')) ? input.data('disabled-days').split(',') : null,
+					picker_format = input.data('format') || 'm/d/Y',
+					picker_fx = (input.data('fx')===false) ? input.data('fx') : true,
+					picker_fx_class = (input.data('fx')===false) ? '' : 'picker-fxs',
+					picker_fx_mobile = (input.data('fx-mobile')===false) ? input.data('fx-mobile') : true,
+					picker_init_set = (input.data('init-set')===false) ? false : true,
+					picker_lang = (input.data('lang')&&(input.data('lang') in i18n)) ? input.data('lang') : 'en',
+					picker_large = (input.data('large-mode')===true) ? true : false,
+					picker_large_class = (input.data('large-default')===true && picker_large===true) ? 'picker-lg' : '',
+					picker_lock = (input.data('lock')=='from'||input.data('lock')=='to') ? input.data('lock') : false,
+					picker_jump = (input.data('jump')&&is_int(input.data('jump'))) ? input.data('jump') : 10,
+					picker_max_year = (input.data('max-year')&&is_int(input.data('max-year'))) ? input.data('max-year') : new Date().getFullYear(),
+					picker_min_year = (input.data('min-year')&&is_int(input.data('min-year'))) ? input.data('min-year') : 1970,
+					
+					picker_modal = (input.data('modal')===true) ? 'picker-modal' : '',
+					picker_theme = input.data('theme') || 'primary',
+					picker_translate_mode = (input.data('translate-mode')===true) ? true : false;
+				
+				
 				if(picker_disabled_days) {
 					$.each(picker_disabled_days, function( index, value ) {
 						if(value&&is_date(value))
