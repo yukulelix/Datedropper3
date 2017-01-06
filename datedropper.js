@@ -1165,8 +1165,16 @@
 		is_int = function(n) {
 			return n % 1 === 0;
 		},
-		is_date = function(str) {
-			 return ( (new Date(str) !== "Invalid Date" && !isNaN(new Date(str)) ));
+		is_date = function(value) {
+			var format;
+			if (toString.call(value) === '[object Date]') {
+				return true;
+			}
+			if (typeof value.replace === 'function') {
+				value.replace(/^\s+|\s+$/gm, '');
+			}
+			format = /(^\d{1,4}[\.|\\/|-]\d{1,2}[\.|\\/|-]\d{1,4})(\s*(?:0?[1-9]:[0-5]|1(?=[012])\d:[0-5])\d\s*[ap]m)?$/;
+			return format.test(value);
 		},
 
 		// REST FUNCTIONS
@@ -1849,7 +1857,7 @@
 				var
 					input = $(this),
 					id = 'datedropper-' + Object.keys(pickers).length;
-				
+					
 				input
 				.attr('data-id',id)
 				.addClass('picker-input')
@@ -1857,7 +1865,7 @@
 					'type':'text',
 					'readonly' : true
 				});
-					
+				
 				var
 					picker_default_date = (input.data('default-date')&&is_date(input.data('default-date'))) ? input.data('default-date') : null,
 					picker_disabled_days = (input.data('disabled-days')) ? input.data('disabled-days').split(',') : null,
