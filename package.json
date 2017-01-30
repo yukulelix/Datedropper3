@@ -1,5 +1,5 @@
 {
-  "name": "datedroppe3",
+  "name": "datedropper",
   "version": "3.0.0",
   "description": "The smallest and powerful jQuery UI datepicker.",
   "main": "datedropper.js",
